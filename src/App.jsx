@@ -3,7 +3,7 @@ import { useEffect, useRef, useState } from 'react'
 import { CardPokemon } from './components/CardPokemon'
 
 function App() {
-  const URL = 'https://pokeapi.co/api/v2/pokemon?limit=10&offset=0';
+  const URL = 'https://pokeapi.co/api/v2/pokemon?limit=30&offset=0';
 
   const [nextUrl, setNextUrl] = useState(URL); // URL de la próxima página de datos.
   const [pokemons, setPokemons] = useState([]); // Lista de pokemons de la página actual.
@@ -52,8 +52,8 @@ function App() {
 
   useEffect(() => {
     const handleScrollNext = () => {
-      const { scrollTop, clientHeight, scrollHeight } = document.documentElement;
-      if (scrollTop + clientHeight >= scrollHeight) {
+      // Restamos 10 del total de la altura del documento
+      if (window.innerHeight + window.scrollY >= document.body.offsetHeight - 10) {
         handleButtonNextRef.current();
       }
     }
@@ -61,7 +61,6 @@ function App() {
     window.addEventListener('scroll', handleScrollNext);
     return () => window.removeEventListener('scroll', handleScrollNext);
   }, []);
-
   // La función handleButtonNext se encarga de actualizar la URL para la próxima página de datos.
   // Primero, extrae el valor actual de offset de la URL.
   // Luego, incrementa este valor en 10 y construye una nueva URL con el nuevo valor de offset.
